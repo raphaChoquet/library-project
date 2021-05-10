@@ -5,25 +5,44 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ApiResource(
- *     denormalizationContext={"groups" = {"user", "user:write"}},
- *     normalizationContext={"groups" = {"user", "user:read"}},
- *     collectionOperations={
- *         "post"= {
- *             "method" = "POST"
- *          }
- *     }
- * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @UniqueEntity("username")
  */
+#[
+ApiResource(
+    collectionOperations: [
+        'post' => [
+            'method' => 'POST',
+            'security' => "is_granted('ROLE_ADMIN')",
+        ],
+    ],
+    itemOperations: [
+        'get' => [
+            'method' => 'GET',
+        ],
+        'put' => [
+            'method' => 'PUT',
+            'security' => "is_granted('ROLE_ADMIN') or object == user",
+        ],
+        'delete' => [
+            'method' => 'DELETE',
+            'security' => "is_granted('ROLE_ADMIN') or object == user",
+        ],
+    ],
+    denormalizationContext: ['groups' =>  ['user', 'user:write']],
+    normalizationContext: ['groups' =>  ['user', 'user:read']]
+)]
 class User implements UserInterface
 {
     /**
@@ -86,6 +105,16 @@ class User implements UserInterface
      * @Groups({"user:read"})
      */
     private ?\DateTimeInterface $updatedAt = null;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Library::class, mappedBy="createBy", orphanRemoval=true)
+     */
+    private Collection $libraries;
+
+    public function __construct()
+    {
+        $this->libraries = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -220,6 +249,36 @@ class User implements UserInterface
     public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Library[]
+     */
+    public function getLibraries(): Collection
+    {
+        return $this->libraries;
+    }
+
+    public function addLibrary(Library $library): self
+    {
+        if (!$this->libraries->contains($library)) {
+            $this->libraries[] = $library;
+            $library->setCreateBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLibrary(Library $library): self
+    {
+        if ($this->libraries->removeElement($library)) {
+            // set the owning side to null (unless already changed)
+            if ($library->getCreateBy() === $this) {
+                $library->setCreateBy(null);
+            }
+        }
 
         return $this;
     }
