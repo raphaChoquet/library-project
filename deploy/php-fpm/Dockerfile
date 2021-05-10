@@ -1,7 +1,10 @@
-FROM php:7.4-fpm
+FROM php:8.0-fpm
 
-RUN DOCKER_USER_UID=1000;
-RUN DOCKER_USER_GID=1000;
+ARG USER_ID
+ARG GROUP_ID
+
+RUN DOCKER_USER_UID=${USER_ID};
+RUN DOCKER_USER_GID=${GROUP_ID};
 
 RUN apt-get -y update
 RUN apt-get upgrade -y

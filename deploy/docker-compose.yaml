@@ -14,6 +14,10 @@ services:
   php:
     build:
       context: ./php-fpm
+      args:
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
+    user: ${CURRENT_UID}
     environment:
       APP_ENV: ${APP_ENV}
       DATABASE_URL: postgresql://${PGSQL_USER}:${PGSQL_PWD}@database:5432/${PGSQL_DB_NAME}?serverVersion=11&charset=utf8
