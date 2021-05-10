@@ -1,0 +1,7 @@
+App\Entity\Book:
+    book_{1..10}:
+        title: '<word()>'
+        author: '<lastName()>'
+        summary: '<text(50)>'
+        nbrOfPages: '<numberBetween(50, 400)>'
+        library: '@library_*'

@@ -1,0 +1,5 @@
+App\Entity\Library:
+    library_{1..3}:
+        name: '<fr_FR:word()>'
+        description: '<text(50)>'
+        createBy: '@toto'

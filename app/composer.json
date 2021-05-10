@@ -76,6 +76,7 @@
         }
     },
     "require-dev": {
+        "hautelook/alice-bundle": "^2.9",
         "symfony/maker-bundle": "^1.31"
     }
 }

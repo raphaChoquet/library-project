@@ -93,7 +93,7 @@ class Book
     /**
      * @ORM\ManyToOne(targetEntity=Library::class, inversedBy="books")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"book:create"})
+     * @Groups({"book:create", "book:read"})
      * @Assert\NotBlank()
      * @CustomAssert\MyLibrary()
      */

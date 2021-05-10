@@ -1,0 +1,11 @@
+App\Entity\User:
+    admin:
+        username: admin
+        plainPassword: admin
+        firstName: Admin
+        lastName: Admin
+    toto:
+        username: toto
+        plainPassword: toto
+        firstName: Toto
+        lastName: Toto

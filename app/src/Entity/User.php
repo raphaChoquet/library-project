@@ -22,6 +22,75 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[
 ApiResource(
     collectionOperations: [
+        'auth' => [
+            'method' => 'POST',
+            'route_name' => 'api_auth',
+            'pagination_enabled' => false,
+            'openapi_context' => [
+                'summary' => 'Authenticate the user and retrieve a Bearer token',
+                'requestBody' => [
+                    'content' => [
+                        'application/json' => [
+                            'schema'  => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'username' => ['type' => 'string'],
+                                    'password' => ['type' => 'string'],
+                                ],
+                            ],
+                            'example' => [
+                                'username' => 'admin',
+                                'password' => 'admin',
+                            ],
+                        ],
+                    ],
+                ],
+                'responses' => [
+                    '201' => [
+                        'content' => [
+                            'application/json' => [
+                                'schema'  => [
+                                    'type' => 'object',
+                                ]
+                            ]
+                        ]
+                    ],
+                    '200' => [
+                        'description' => 'Bearer token',
+                        'content' => [
+                            'application/json' => [
+                                'schema'  => [
+                                    'type' => 'object',
+                                    'properties'=> [
+                                        'token' => ['type' => 'string']
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    '400' => [
+                        'description' => 'Bad request',
+                        'content' => [
+                            'application/json' => [
+                                'schema'  => [
+                                    'type' => 'object',
+                                ]
+                            ]
+                        ]
+                    ],
+                    '401' => [
+                        'description' => 'Bad credentials',
+                        'content' => [
+                            'application/json' => [
+                                'schema'  => [
+                                    'type' => 'object',
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ],
         'post' => [
             'method' => 'POST',
             'security' => "is_granted('ROLE_ADMIN')",
