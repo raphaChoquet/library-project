@@ -35,7 +35,7 @@ init: up composer-install
 	$(EXEC_PHP) bin/console doctrine:database:create
 	$(EXEC_PHP) bin/console doctrine:migration:migrate -n
 	$(EXEC_PHP) bin/console hautelook:fixtures:load -n
-	$(EXEC_PHP) chmod -R 777 ./public/media/
+	$(EXEC_PHP) bin/console lexik:jwt:generate-keypair
 
 # PHP command
 composer-install:
