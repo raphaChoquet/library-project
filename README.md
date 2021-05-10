@@ -16,13 +16,13 @@ We use JWT authentification to protect the API.
 All resources ask a valid JWT token. 
 Use the url `/api/auth` to retrieve this token thanks to this accounts:
 
-***Admin account***:
-Login: admin
-Password: admin
+**Admin account**:  
+_Login_: admin  
+_Password_: admin  
 
-***User account***:
-Login: toto
-Password: toto
+**User account**:  
+_Login_: toto  
+_Password_: toto
 
 For more information about JWT : 
 - https://jwt.io/introduction/
