@@ -38,7 +38,7 @@ class User implements UserInterface
      * @Groups({"user"})
      * @Assert\NotBlank()
      */
-    private ?string $email =null;
+    private ?string $username =null;
 
     /**
      * @ORM\Column(type="string", length=30)
@@ -92,18 +92,6 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
     /**
      * A visual identifier that represents this user.
      *
@@ -111,8 +99,16 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return $this->username;
     }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
 
     /**
      * @see UserInterface

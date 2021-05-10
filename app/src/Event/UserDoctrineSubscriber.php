@@ -20,11 +20,11 @@ class UserDoctrineSubscriber implements EventSubscriber
     public function getSubscribedEvents(): array
     {
         return [
-            [Events::prePersist, 'encodePassword'],
+            Events::prePersist
         ];
     }
 
-    public function encodePassword(LifecycleEventArgs $args): void
+    public function prePersist(LifecycleEventArgs $args): void
     {
         $user = $args->getEntity();
 
